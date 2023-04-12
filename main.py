@@ -40,7 +40,7 @@ NUMEROLOGY_TABLE_KHZ = {
 SLOT_TIME_MS = 0.5
 RESOURCE_BLOCKS_GUARDS = 4
 SLOT_SUBCARIERS = 12
-
+SLOT_SYMBOLS = 14
 
 def throughput5g(input):
     slot_subcarier_frequency_khz = NUMEROLOGY_TABLE_KHZ.get(
@@ -48,9 +48,8 @@ def throughput5g(input):
     resource_blocks = math.floor((input.get('bandwidth') * 1000) / (
         SLOT_SUBCARIERS * slot_subcarier_frequency_khz) - RESOURCE_BLOCKS_GUARDS)
 
-    modulation_order = 27
-    data_symbols = SLOT_SUBCARIERS - 3  # 2 slots for DRMS and 1 for PDCCH
-    bits_per_symbol = BITS_PER_SYMBOL_TABLE.get(modulation_order)
+    data_symbols = SLOT_SYMBOLS - 3  # 2 slots for DRMS and 1 for PDCCH
+    bits_per_symbol = BITS_PER_SYMBOL_TABLE.get(input.get('modulation_order'))
     bits_per_slot = math.floor(
         SLOT_SUBCARIERS * data_symbols * bits_per_symbol)
 
@@ -77,8 +76,7 @@ def validate(input: dict):
 
 def calculate_throughput(args) -> int:
     if (len(args) < 4):
-        print('invalid number of arguments')
-        return
+        raise Exception('invalid number of arguments')
     input = {
         'numerology': args[0],
         'modulation_order': args[1],
@@ -96,6 +94,6 @@ if __name__ == '__main__':
     args = sys.argv[1:]
     try:
         input_as_integers = list(map(lambda i: int(i),  args))
-        print(calculate_throughput(input_as_integers))
+        print(f'{calculate_throughput(input_as_integers)} Mbps')
     except Exception as e:
-        print('invalid arguments')
+        print(e)
