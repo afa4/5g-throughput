@@ -82,10 +82,8 @@ def calculate_throughput(args) -> int:
         'modulation_order': args[1],
         'bandwidth': args[2],
         'mimo_layers': args[3],
-        'link_type': 0
+        'link_type': args[4] if len(args) == 5 else 0
     }
-    if (len(args) == 5):
-        input['link_type'] = args[4]
     validate(input)
     return throughput5g(input)
 
@@ -94,6 +92,6 @@ if __name__ == '__main__':
     args = sys.argv[1:]
     try:
         input_as_integers = list(map(lambda i: int(i),  args))
-        print(f'{calculate_throughput(input_as_integers)} Mbps')
+        print(f'{calculate_throughput(input_as_integers)}')
     except Exception as e:
         print(e)

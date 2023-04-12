@@ -36,3 +36,15 @@ python main.py 1 27 100 4 0
 ```shell
 python main.py 1 27 100 4 1
 ```
+
+### Execution tests results are located in report.txt
+
+### Incrementing report
+
+```shell
+python report.py
+```
+
+The report will generate permutations based on throuput calculator valid params
+
+Each execution will select 4 random valid modulation orders (the program wolud be slow if report executed all 27 possibilities).
